@@ -5,6 +5,7 @@ This integration allow to use a streaming software like TAK ICU with the Video S
 
 
 the video stream is sent to all the connected TAK Devices
+
 ![image](https://user-images.githubusercontent.com/60719165/139935868-59624431-1f17-4503-8c6a-d682f75d97c1.png)
 
 Now you can retrieve it in your video list
@@ -19,5 +20,6 @@ Now you can retrieve it in your video list
 * API service must be active on RTSP-simple Server
 * in the node "Post  Video to FTS" configure your Rest API token
 
-
 ![image](https://user-images.githubusercontent.com/60719165/139943631-4c6dd8ef-80fa-439c-be9c-84280ad8103c.png)
+
+* in the "FTH Global Config" node set the value for IPs of the different servers
