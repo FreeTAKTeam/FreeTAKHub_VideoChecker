@@ -2,7 +2,7 @@
 
 This integration allow to use a streaming software like TAK ICU with the Video Server and FTS
 ![image](https://user-images.githubusercontent.com/60719165/139940405-8e841a98-58e3-431a-8bb6-fce8462b3ef7.png)
-
+It periodically connects to the RTSP-simple server using the API, check for the existence of streams 
 
 the video stream is sent to all the connected TAK Devices
 
