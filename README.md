@@ -27,9 +27,13 @@ FTS send a notification with the COT
 ATAK shows the video, connecting to the FTS to visualized the COT and to the video server to get the video feed.
 
 ## Installation
-* install FTS 1.9 +
-* Install RTSP-simple Server v0.17.0 +
-* install the NodeRed Flow in your FTS hub
+* install [FTS 1.9 +](https://github.com/FreeTAKTeam/FreeTAKServer-User-Docs/blob/main/docs/docs/Installation/Linux/Install.md)
+* Install [RTSP-simple Server v0.17.0 +](https://github.com/FreeTAKTeam/FreeTAKServer-User-Docs/blob/main/docs/docs/FreeTAKHub/Video/Installation.md)
+* Install [NodeRed](https://github.com/FreeTAKTeam/FreeTAKServer-User-Docs/blob/main/docs/docs/FreeTAKHub/NodeRedinstallation.md)
+* import the NodeRed Flow in your FTS hub
+* Install the node-red contrib-config 
+![image](https://user-images.githubusercontent.com/60719165/143119468-5f86814c-f8a4-4376-92c8-0f4d71873f8f.png)
+
 
 ## Configuration
 * API service must be active on FTS 
