@@ -14,12 +14,14 @@
         "method": "POST",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "{{{addr}}}:{{{port}}}/ManageVideoStream/postVideoStream",
+        "url": "http://127.0.0.1:19023/ManageVideoStream/postVideoStream",
         "tls": "",
         "persist": false,
         "proxy": "",
+        "insecureHTTPParser": false,
         "authType": "bearer",
         "senderr": false,
+        "headers": [],
         "x": 970,
         "y": 240,
         "wires": [
@@ -126,7 +128,7 @@
         "type": "function",
         "z": "e81402f5.f8254",
         "name": "CreateVideoStream",
-        "func": "\n  msg.addr =  global.get('FTH_FTS_URL');\n  msg.port = global.get('FTH_FTS_API_Port');\n  msg.streamPort = global.get('FTH_FTS_STREAM_Port');\n  msg.streamAddress =  global.get('FTH_FTS_VIDEO_URL');\n  let streamPath =  msg.payload;\n  let  alias =  msg.payload;\n  let streamProtocol= \"rtsp\";\n    let token =  global.get('FTH_FTS_API_Auth') ;\n \n\nmsg.payload = [];\n\n msg.payload={\n     alias: alias,\n     streamProtocol: streamProtocol,\n     streamAddress:  msg.streamAddress,\n     streamPort: msg.streamPort ,\n     streamPath: streamPath,\n };\n \nmsg.headers = {};\nmsg.headers['Authorization'] = \"Bearer \"+ token;\n    \nreturn msg;\n\n",
+        "func": "\n  msg.addr =  global.get('FTH_FTS_URL');\n  msg.port = global.get('FTH_FTS_API_Port');\n  msg.streamPort = global.get('FTH_FTS_STREAM_Port');\n  msg.streamAddress =  global.get('FTH_FTS_VIDEO_URL');\n  let streamPath =  msg.payload;\n  let  alias =  msg.payload;\n  let streamProtocol= \"rtsp\";\n\n \n\nmsg.payload = [];\n\n msg.payload={\n     alias: alias,\n     streamProtocol: streamProtocol,\n     streamAddress:  msg.streamAddress,\n     streamPort: msg.streamPort ,\n     streamPath: streamPath,\n };\n    \nreturn msg;\n\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -150,8 +152,8 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 970,
@@ -162,7 +164,7 @@
         "id": "f8da2c2e.b2fb3",
         "type": "debug",
         "z": "e81402f5.f8254",
-        "name": "Retunr Message",
+        "name": "post",
         "active": false,
         "tosidebar": true,
         "console": false,
@@ -171,7 +173,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1180,
+        "x": 1150,
         "y": 180,
         "wires": []
     },
@@ -183,12 +185,11 @@
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "http://147.182.128.123:9997/v1/paths/list",
+        "url": "http://127.0.0.1:9997/v1/paths/list",
         "tls": "",
         "persist": false,
         "proxy": "",
         "authType": "",
-        "senderr": false,
         "x": 490,
         "y": 160,
         "wires": [
@@ -202,8 +203,8 @@
         "id": "801fd65f.5be7d8",
         "type": "debug",
         "z": "e81402f5.f8254",
-        "name": "received from JSON",
-        "active": false,
+        "name": "received from Video server JSON",
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -211,7 +212,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 540,
+        "x": 580,
         "y": 80,
         "wires": []
     },
@@ -242,6 +243,73 @@
         ]
     },
     {
+        "id": "e7eb8030.427a4",
+        "type": "switch",
+        "z": "e81402f5.f8254",
+        "name": "check streams",
+        "property": "payload.source",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "null"
+            },
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 600,
+        "y": 400,
+        "wires": [
+            [],
+            [
+                "7fc68a9f.e82fe4"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "7fc68a9f.e82fe4",
+        "type": "debug",
+        "z": "e81402f5.f8254",
+        "name": "no stream!",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "b6661f0d.790e8",
+        "type": "debug",
+        "z": "e81402f5.f8254",
+        "name": "after split",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 460,
+        "wires": []
+    },
+    {
         "id": "70339513.554ecc",
         "type": "split",
         "z": "e81402f5.f8254",
@@ -258,6 +326,26 @@
             [
                 "ce49e6a3.280768",
                 "7714b387.25136c"
+            ]
+        ]
+    },
+    {
+        "id": "90676aac.d49f98",
+        "type": "split",
+        "z": "e81402f5.f8254",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 410,
+        "y": 420,
+        "wires": [
+            [
+                "b6661f0d.790e8",
+                "e7eb8030.427a4"
             ]
         ]
     },
@@ -289,7 +377,7 @@
             {
                 "p": "FTH_FTS_URL",
                 "pt": "global",
-                "to": "147.182.190.54",
+                "to": "204.48.30.216",
                 "tot": "str"
             },
             {
@@ -319,13 +407,19 @@
             {
                 "p": "FTH_FTS_VIDEO_URL",
                 "pt": "global",
-                "to": "147.182.190.54",
+                "to": "204.48.30.216",
                 "tot": "str"
             },
             {
                 "p": "FTH_FTS_VIDEO_API_PORT",
                 "pt": "global",
                 "to": "9997",
+                "tot": "str"
+            },
+            {
+                "p": "FTH_FTS_EndPoints_geoObject_POST",
+                "pt": "global",
+                "to": "/ManageGeoObject/postGeoObject",
                 "tot": "str"
             }
         ],
@@ -376,7 +470,7 @@
         "type": "debug",
         "z": "e81402f5.f8254",
         "name": "after function",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -389,10 +483,10 @@
         "wires": []
     },
     {
-        "id": "052f9e0b7aac6ec0",
+        "id": "bfadd2cc.7c368",
         "type": "inject",
         "z": "e81402f5.f8254",
-        "name": "Check FTS",
+        "name": "",
         "props": [
             {
                 "p": "payload"
@@ -409,12 +503,47 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 410,
-        "y": 280,
+        "x": 390,
+        "y": 520,
         "wires": [
             [
-                "41b82d8d.8266e4"
+                "a4bc3376.a38dd"
             ]
         ]
+    },
+    {
+        "id": "a4bc3376.a38dd",
+        "type": "function",
+        "z": "e81402f5.f8254",
+        "name": "",
+        "func": "var colors=[\"red\",\"blue\",\"green\"];\nfor (let i = 0; i < colors.length; i++) { \n  msg.payload = colors[i]\n  node.send(msg);\n}\nreturn;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 520,
+        "wires": [
+            [
+                "c290bbb3.401e98"
+            ]
+        ]
+    },
+    {
+        "id": "c290bbb3.401e98",
+        "type": "debug",
+        "z": "e81402f5.f8254",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 520,
+        "wires": []
     }
 ]
